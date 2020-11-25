@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>App</title>
+</head>
+<body>
+   <app></app>
+   <script src="nav.js"></script>
+   <script src="index.js"></script>
+   <script>
+      nav.start();
+      nav.route('/', 'Home', home);
+      nav.route('/contact', 'Contact Us', beforeContact, contact);
+      nav.route('/about', 'About Us', about);
+      nav.route('/login', 'Login', login);
+      nav.route('/register', 'Register', register);
+      nav.route('/dashboard', 'Dashboard', dashboard);
+      
+   </script>
+
+   <template id="home">
+      <h1>Welcome To Nav</h1>
+   </template>
+
+</body>
+</html>
