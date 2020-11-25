@@ -1,8 +1,6 @@
 const nav = {
 
    __routes: [],
-   __key: null,
-   global: {},
    state: {},
 
    start: function() {
@@ -11,10 +9,7 @@ const nav = {
             nav.push(document.location.pathname, event.state, false);
          }
 
-         window.onreadystatechange = function(event) {
-            alert('Ready state');
-         }
-   
+         // localStorage.setItem(window.location.origin, JSON.stringify({}));
          nav.push(window.location.pathname, window.history.state);
       });
    },
@@ -23,16 +18,8 @@ const nav = {
       // add/update a property in state
       nav.state = Object.assign(nav.state ?? {}, params ?? {});
       // update the states in the local storage
-      localStorage.setItem(nav.__key.toString(), JSON.stringify(nav.state));
-      console.log(localStorage);
-   },
-
-   setGlobal: function(params) {
-      // add/update a property in the global state
-      nav.global = Object.assign(nav.global, params ?? {});
-      // update the states in the local storage
-      localStorage.setItem('global', JSON.stringify(nav.global));
-      console.log(localStorage);
+      localStorage.setItem(window.location.origin, JSON.stringify(nav.state));
+      // console.log(localStorage);
    },
 
    route: function(route = '/', title = 'Document', ...callbacks) {
@@ -53,11 +40,8 @@ const nav = {
                if (addToHistory) window.history.pushState(params, item.title, item.route);
                // set the document title
                document.title = item.title;
-               // set the route key
-               nav.__key = key;
                // set the state from localStorage
-               nav.state = JSON.parse(localStorage.getItem(key.toString()));
-               Object.assign(nav.state ?? {}, params ?? {});
+               nav.state = JSON.parse(localStorage.getItem(window.location.origin));
                // console.log(nav.state);
                // handle route callbacks
                item.callbacks.forEach(callback => {
