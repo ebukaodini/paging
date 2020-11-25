@@ -1,32 +1,41 @@
 const app = document.getElementsByTagName("app")[0];
 const $ = (query) => { return document.querySelectorAll(query) };
 
-let home = function(ctx) {
-   app.innerHTML = template("Home");
+let home = function(param) {
+   nav.setState({page: 'Home'});
+   app.innerHTML = template();
    funcs();
 }
 
-let about = function(ctx) {
-   app.innerHTML = template("About Us");
+let setted = false;
+let about = function(param) {
+   if (setted == false) {
+      nav.setState({page: 'About Us'});
+      setted = true;
+   }
+   app.innerHTML = template();
    funcs();
 }
 
-let beforeContact = function(ctx) {
-   alert('Before going to Contact Us');
+let beforeContact = function(param) {
+   console.log('Before going to Contact Us');
 }
 
-let contact = function(ctx) {
-   app.innerHTML = template("Contact Us");
+let contact = function(param) {
+   nav.setState({page: 'Contact Us'});
+   app.innerHTML = template();
    funcs();
 }
 
-let register = function(ctx) {
-   app.innerHTML = template("Register");
+let register = function(param) {
+   nav.setState({page: 'Register'});
+   app.innerHTML = template();
    funcs();
 }
 
-let login = function(ctx) {
-   app.innerHTML = template("Login") + `
+let login = function(param) {
+   nav.setState({page: 'Login'});
+   app.innerHTML = template() + `
    <hr>
    <input type='text' id='name' placeholder='Enter your name'>
    <button id='submit'>Login</button>
@@ -34,25 +43,28 @@ let login = function(ctx) {
    funcs();
    $('#submit')[0].addEventListener('click', function() {
       let name = $('#name')[0].value;
+      nav.setState({auth: true});
       nav.push('/dashboard', {
          name: name
       });
    })
 }
 
-let dashboard = function (ctx) {
-   app.innerHTML = `
-      <h1>Welcome Back ${ctx.name}!</h1>
+let dashboard = function (param) {
+   nav.setState({page: 'Login'});
+   app.innerHTML = template() + `
       <button id='logout'>logout</button>
    `;
+   funcs();
 
-   $('#logout')[0].addEventListener('click', () => nav.push('/login'));
+   $('#logout')[0].addEventListener('click', () => { nav.setState({auth: false}); nav.push('/login');});
 }
 
-let template = function(page) {
+let template = function() {
    return `
       <div>
-         <h1>${page}</h1>
+         <h1>${nav.state.page}</h1>
+         <span>${nav.state.auth == true ? 'User is Logged In' : 'User is not Logged In'}</span>
       </div>
       <div>
          <button id='home'>Home</button>
