@@ -1,4 +1,4 @@
-# Paging (or a collection of some required Frontend Components)
+# Paging (or a collection required Frontend Components)
 
 ## nav - Navigator
 
