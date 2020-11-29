@@ -1,122 +1,25 @@
-<!-- This is a sample application -->
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-   <meta charset="UTF-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>App</title>
-</head>
-
-<body>
-   <app></app>
-   <script src="dist/nav.js"></script>
-   <script src="dist/dom.js"></script>
-   <script src="dist/ctx.js"></script>
-   <script>
-      let home = function (param) {
-         ctx.setState({ page: 'Home' });
-         app.innerHTML = render('sample');
-         handlers();
-      }
-
-      let about = function (param) {
-         ctx.setState({ page: 'About Us' });
-         app.innerHTML = render('sample');
-         handlers();
-      }
-
-      let contact = function (param) {
-         ctx.setState({ page: 'Contact Us' });
-         app.innerHTML = render('sample');
-         handlers();
-      }
-
-      let register = function (param) {
-         ctx.setState({ page: 'Register' });
-         app.innerHTML = render('sample');
-         handlers();
-      }
-
-      let login = function (param) {
-         ctx.setState({ page: 'Login' });
-         app.innerHTML = render('sample') + `
-   <hr>
-   <input type='text' id='name' placeholder='Enter your username'>
-   <button id='submit'>Login</button>
-   `;
-         handlers();
-         $('#submit')[0].addEventListener('click', function () {
-            let name = $('#name')[0].value;
-            let age = 20;
-            param = {
-               user: {
-                  name: name,
-                  timestamp: Date.now()
-               },
-               auth: true
-            }
-            ctx.setState(param);
-            nav.route('/dashboard', {
-               name: name
-            });
-         })
-      }
-
-      let checkIfLoggedIn = () => {
-         if (!ctx.state.auth) { console.log('not logged in'); nav.route('/login'); nav.routing = false; }
-      }
-
-      let dashboard = function (param) {
-         ctx.setState({ page: 'Dashboard' });
-         app.innerHTML = render('sample') + `
-      <button id='logout'>logout</button>
-   `;
-         handlers();
-
-         $('#logout')[0].addEventListener('click', () => { ctx.setState({ auth: false }); ctx.removeState('user'); nav.route('/login'); });
-      }
-
-      let handlers = function () {
-         $('#back')[0].addEventListener('click', () => nav.back());
-         $('#replace')[0].addEventListener('click', () => nav.replace('/dashboard'));
-         $('#forward')[0].addEventListener('click', () => nav.forward());
-         $('#home')[0].addEventListener('click', () => nav.route('/'));
-         $('#contact')[0].addEventListener('click', () => nav.route('/contact'));
-         $('#about')[0].addEventListener('click', () => nav.route('/about'));
-         $('#register')[0].addEventListener('click', () => nav.route('/register'));
-         $('#login')[0].addEventListener('click', () => nav.route('/login'));
-         $('#dashboard')[0].addEventListener('click', () => nav.route('/dashboard'));
-      }
-   </script>
-   <script>
-      nav.setRoute('/', 'Home', home);
-      nav.setRoute('/contact', 'Contact Us', contact);
-      nav.setRoute('/about', 'About Us', about);
-      nav.setRoute('/login', 'Login', login);
-      nav.setRoute('/register', 'Register', register);
-      nav.setRoute('/dashboard', 'Dashboard', checkIfLoggedIn, dashboard);
-      nav.start();
-   </script>
-   <template id='sample'>
-      <div>
-         <h1>${ctx.state.page}</h1>
-         <span>${ctx.state.auth == true ? 'User is Logged In' : 'User is not Logged In'}</span><br>
-         <span>${ctx.state.auth == true ? 'Username: ' + (ctx.state.user.name ?? '') : ''}</span><br>
-         <span>${ctx.state.auth == true ? 'Logged in at: ' + (ctx.state.user.timestamp ?? '') : ''}</span><br>
-      </div>
-      <div>
-         <button id='home'>Home</button>
-         <button id='contact'>Contact Us</button>
-         <button id='about'>About Us</button>
-         <button id='register'>Register</button>
-         <button id='login'>Login</button>
-         <button id='dashboard'>Dashboard</button>
-      </div>
-      <button id='back'>back</button>
-      <button id='forward'>forward</button>
-      <button id='replace'>replace</button>
-   </template>
-</body>
-
+<html>
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>App</title>
+   </head>
+   <body>
+      <app></app>
+      <script src="index.js"></script>
+      <script>
+         nav.setRoute('/', 'Home', function() {
+            ctx.setState({developer: 'Frontend'})
+            app.innerHTML = render('sample');
+         });
+         nav.setRoute('/developers', 'Developers', function() {
+            ctx.setState({developer: 'All'})
+            app.innerHTML = render('sample');
+         });
+         nav.start();
+      </script>
+      <template id='sample'>
+         Hello ${ctx.state.developer} <a href="/developers">Developers!</a>
+      </template>
+   </body>
 </html>

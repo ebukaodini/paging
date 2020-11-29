@@ -10,3 +10,7 @@ node_modules
 # temporary files
 *.tmp
 *~
+
+# Sample html files
+sample.html
+index.html
