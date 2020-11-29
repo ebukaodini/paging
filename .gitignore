@@ -12,5 +12,4 @@ node_modules
 *~
 
 # Sample html files
-sample.html
-index.html
+*.sample.html
